@@ -16,8 +16,10 @@ MonoBehaviour:
   description: 'Bonus points to any team who can disarm this without writing everything
     down.
 
+    Module by DVD.
 
-    Module by DVD.'
+
+    moduleID: MadMemory'
   version: 1.0
   outputFolder: build
-  previewImage: {fileID: 0}
+  previewImage: {fileID: 2800000, guid: f2dd46fa28e3c06468545cb7286098be, type: 3}
