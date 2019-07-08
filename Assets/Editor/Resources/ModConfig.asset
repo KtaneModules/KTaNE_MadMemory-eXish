@@ -14,8 +14,9 @@ MonoBehaviour:
   id: MadMemory
   title: Mad Memory
   description: "Bonus points to any team who can disarm this without writing everything
-    down.\nModule by DVD.\n\nmoduleID: MadMemory\n\nManual [HTML]: https://ktane.timwi.de/HTML/Mad%20Memory.html\r\nManual
+    down.\nModule by DVD, maintainer is eXish.\n\nmoduleID: MadMemory\n\nTwitch Plays
+    supported\n\nManual [HTML]: https://ktane.timwi.de/HTML/Mad%20Memory.html\r\nManual
     [PDF]: https://ktane.timwi.de/PDF/Mad%20Memory.pdf"
-  version: 1.0
+  version: 1.1
   outputFolder: build
   previewImage: {fileID: 2800000, guid: bb70849eb4a07f743ad31765aa869798, type: 3}

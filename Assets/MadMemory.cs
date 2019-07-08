@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using System.Text.RegularExpressions;
+using System.Linq;
+using System;
 
 public class MadMemory : MonoBehaviour
 {
@@ -706,6 +709,110 @@ public class MadMemory : MonoBehaviour
             }
         }
         isActivated = true;
+    }
+
+    //twitch plays
+    private bool cmdIsValid(string cmd)
+    {
+        char[] valids = { '1', '2', '3', '4' };
+        if ((cmd.Length >= 1) && (cmd.Length <= 4))
+        {
+            foreach (char c in cmd)
+            {
+                if (!valids.Contains(c))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    #pragma warning disable 414
+    private readonly string TwitchHelpMessage = @"!{0} position/pos/p 1234 [Presses the buttons in order from left to right and submits] | !{0} label/lab/l 3412 [Presses the buttons labelled '3','4','1', then '2' and submits] | !{0} nothing [Presses the submit button, use if you need to submit nothing]";
+    #pragma warning restore 414
+
+    IEnumerator ProcessTwitchCommand(string command)
+    {
+        if (Regex.IsMatch(command, @"^\s*nothing\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+        {
+            yield return null;
+            yield return new[] { submitButton };
+            yield break;
+        }
+        string[] parameters = command.Split(' ');
+        if (Regex.IsMatch(parameters[0], @"^\s*position\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) || Regex.IsMatch(parameters[0], @"^\s*pos\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) || Regex.IsMatch(parameters[0], @"^\s*p\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+        {
+            if(parameters.Length == 2)
+            {
+                if (cmdIsValid(parameters[1]))
+                {
+                    yield return null;
+                    foreach (char c in parameters[1])
+                    {
+                        if (c.Equals('1'))
+                        {
+                            yield return new[] { buttons[0] };
+                        }
+                        else if (c.Equals('2'))
+                        {
+                            yield return new[] { buttons[1] };
+                        }
+                        else if (c.Equals('3'))
+                        {
+                            yield return new[] { buttons[2] };
+                        }
+                        else if (c.Equals('4'))
+                        {
+                            yield return new[] { buttons[3] };
+                        }
+                        yield return new WaitForSeconds(.1f);
+                    }
+                    yield return new[] { submitButton };
+                }
+            }
+            yield break;
+        }
+        if (Regex.IsMatch(parameters[0], @"^\s*label\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) || Regex.IsMatch(parameters[0], @"^\s*lab\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) || Regex.IsMatch(parameters[0], @"^\s*l\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+        {
+            if (parameters.Length == 2)
+            {
+                if (cmdIsValid(parameters[1]))
+                {
+                    yield return null;
+                    foreach (char c in parameters[1])
+                    {
+                        if (c.Equals('1'))
+                        {
+                            int index = Array.FindIndex(buttonNumbers, x => x.Equals(1));
+                            yield return new[] { buttons[index] };
+                        }
+                        else if (c.Equals('2'))
+                        {
+                            int index = Array.FindIndex(buttonNumbers, x => x.Equals(2));
+                            yield return new[] { buttons[index] };
+                        }
+                        else if (c.Equals('3'))
+                        {
+                            int index = Array.FindIndex(buttonNumbers, x => x.Equals(3));
+                            yield return new[] { buttons[index] };
+                        }
+                        else if (c.Equals('4'))
+                        {
+                            int index = Array.FindIndex(buttonNumbers, x => x.Equals(4));
+                            yield return new[] { buttons[index] };
+                        }
+                        yield return new WaitForSeconds(.1f);
+                    }
+                    yield return new[] { submitButton };
+                }
+            }
+            yield break;
+        }
     }
 }
 
