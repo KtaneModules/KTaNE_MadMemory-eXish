@@ -1,8 +1,6 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
-using System.Text.RegularExpressions;
 using System.Linq;
 using System;
 
@@ -25,7 +23,6 @@ public class MadMemory : MonoBehaviour
     public int[] screenLabels = new int[4];
     
     int stage = 0;
-    int correctIndex;
     bool isActivated = true;
     
     private static int _moduleIdCounter = 1;
@@ -122,8 +119,8 @@ public class MadMemory : MonoBehaviour
 
     void OnPress(int pressedButton)
     {
-        GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, transform);
-        GetComponent<KMSelectable>().AddInteractionPunch();
+        GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, buttons[pressedButton].transform);
+        buttons[pressedButton].AddInteractionPunch();
 
         if (!isActivated)
         {
@@ -156,8 +153,8 @@ public class MadMemory : MonoBehaviour
     
     void OnSubmit()
     {
-        GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, transform);
-        GetComponent<KMSelectable>().AddInteractionPunch();
+        GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, submitButton.transform);
+        submitButton.AddInteractionPunch();
         bool[] result = CorrectResult(false);
         string sequence = "";
         for (int i = 0; i < 4; i++)
@@ -812,6 +809,27 @@ public class MadMemory : MonoBehaviour
                 }
             }
             yield break;
+        }
+    }
+
+    IEnumerator TwitchHandleForcedSolve()
+    {
+        while (!isActivated) yield return true;
+        int start = stage;
+        for (int i = start; i < 4; i++)
+        {
+            bool[] correct = CorrectResult(false);
+            for (int j = 0; j < 4; j++)
+            {
+                if (buttonStates[i, j] != correct[j])
+                {
+                    buttons[j].OnInteract();
+                    yield return new WaitForSeconds(0.2f);
+                }
+            }
+            submitButton.OnInteract();
+            if (i != 3)
+                while (!isActivated) yield return true;
         }
     }
 }

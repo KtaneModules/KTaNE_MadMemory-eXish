@@ -17,6 +17,6 @@ MonoBehaviour:
     down.\nModule by DVD, maintainer is eXish.\n\nmoduleID: MadMemory\n\nTwitch Plays
     supported\n\nManual [HTML]: https://ktane.timwi.de/HTML/Mad%20Memory.html\r\nManual
     [PDF]: https://ktane.timwi.de/PDF/Mad%20Memory.pdf"
-  version: 1.1
+  version: 1.2
   outputFolder: build
   previewImage: {fileID: 2800000, guid: bb70849eb4a07f743ad31765aa869798, type: 3}
